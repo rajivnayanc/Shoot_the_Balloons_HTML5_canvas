@@ -16,4 +16,4 @@ Here are some screenshots of the Game :
 
 ![picture](assets/2.png)
 
-![Video](assets/video.mp4)
+<video src="assets/video.mp4"></video>
