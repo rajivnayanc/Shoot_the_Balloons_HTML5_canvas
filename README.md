@@ -9,6 +9,8 @@ You can play the game here: [Click Here](http://myprojectspro.000webhostapp.com/
 
 Enjoy! 
 
+To see the game video: [Click Here](https://youtu.be/GfCtvOjVBes)
+
 Here are some screenshots of the Game :
 
 ![picture](assets/1.png)
@@ -16,4 +18,12 @@ Here are some screenshots of the Game :
 
 ![picture](assets/2.png)
 
-<video src="assets/video.mp4"></video>
+
+### Built with
+
+* [HTML 5 Canvas](https://www.w3schools.com/html/html5_canvas.asp)
+
+## Deployement
+* Download the repository
+* Open index.html in browser
+* Done!
