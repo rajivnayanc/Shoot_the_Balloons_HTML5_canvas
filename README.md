@@ -13,10 +13,9 @@ To see the game video: [Click Here](https://youtu.be/GfCtvOjVBes)
 
 Here are some screenshots of the Game :
 
-![picture](assets/1.png)
+<img src = "assets/1.png" width = "60%">
+<img src = "assets/2.png" width="60%">
 
-
-![picture](assets/2.png)
 
 
 ### Built with
