@@ -26,3 +26,9 @@ Here are some screenshots of the Game :
 * Download the repository
 * Open index.html in browser
 * Done!
+
+# About Me
+
+You can check my other projects on:
+* [Github](https://github.com/rajivnayanc)
+* [LinkedIn](https://www.linkedin.com/in/rajivnayanc/)
