@@ -5,7 +5,7 @@
 This works on most of the modern browser.
 This game will only work on Desktops and Laptops. 
 
-You can play the game here: [Click Here](http://myprojectspro.000webhostapp.com/JavaScript%20Projects/Shoot%20the%20Balloon/index.html)
+You can play the game here: [Click Here](https://rajivnayanc.github.io/Shoot_the_Balloons_HTML5_canvas/)
 
 Enjoy! 
 
