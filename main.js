@@ -36,7 +36,7 @@ var mouse = { //variable to store the mouse cursor's coordinates
 };
 
 var bull_start = { //variable to store the bullet's initial position and angle of velocity
-	x:undefined, 
+	x: undefined, 
 	y: undefined,
 	angle: undefined,
 	dist: undefined
@@ -169,7 +169,7 @@ function Gun(){ //Class for Gun
 	}
 }
 
-function scoreBoard(){
+function ScoreBoard(){
 	this.x = canvas.width * 0.8;
 	this.y = canvas.height * 0.1;
 	this.score = 0;
@@ -183,20 +183,80 @@ function scoreBoard(){
 	}
 }
 
+function getQuadraticRoots(a,b,c){
+	let deteminant = b*b - 4*a*c;
+	if(deteminant < 0) return null;
+	deteminant = Math.sqrt(deteminant);
+
+	const root1 = (-b - deteminant)/(2*a);
+	const root2 = (-b + deteminant)/(2*a);
+	if(root1 >=0) return root1;
+	if(root2 >=0) return root2;
+}
+
+function ProjectileLine(){
+	this.start = {x:0,y:0};
+	this.end = {x:0,y:0};
+	this.controlPoints = {x:0,y:0};
+	this.gravity = 0.3;
+	this.draw = function() {
+		c.save();
+		c.lineWidth = 1;
+		c.beginPath();
+		c.setLineDash([10,15])
+		c.moveTo(this.start.x, this.start.y);
+		c.quadraticCurveTo(this.controlPoints.x, this.controlPoints.y, this.end.x, this.end.y);
+		c.strokeStyle = "red";
+		c.stroke();
+		c.restore();
+	}
+	this.getControlPoints  = function(a, b, c){
+		let out = {x:0,y:0};
+		out.x = (this.start.x+this.end.x)/2;
+		out.y = ((this.end.x-this.start.x)/2) * (2*a*this.start.x + b) + (a*this.start.x*this.start.x + b*this.start.x + c);
+		return out;
+	}
+
+	this.update = function() {
+		this.start.x = bull_start.x;
+		this.start.y = bull_start.y;
+		const dist = bull_start.dist/distance(0,0,canvas.width, canvas.height);
+		const velocity = Math.min(150 * dist,40);
+		let ux = Math.cos(bull_start.angle) * velocity;
+		let uy = Math.sin(bull_start.angle) * velocity;
+		
+		let t_x = (canvas.width-this.start.x)/ux;
+		let t_y = getQuadraticRoots(this.gravity, 2*uy, -2 * (canvas.height - this.start.y));
+		let t_y_top = getQuadraticRoots(this.gravity, 2*uy, -2 * (0 - this.start.y));
+		let timeArray = [t_x, t_y, t_y_top].filter(a=>a!=null)
+		let min_time = Math.min(...timeArray);
+		this.end.x = this.start.x + ux*min_time;
+		this.end.y = this.start.y + uy*min_time +  (this.gravity * min_time * min_time)/2;
+		const a = this.gravity/(2*ux*ux);
+		const b = uy/ux - (this.gravity*this.start.x)/(ux*ux);
+		const c = this.start.y - uy*this.start.x/ux + this.gravity*this.start.x*this.start.x/(2*ux*ux);
+		this.controlPoints = this.getControlPoints( a, b, c );
+		this.draw();
+	}
+}
+
 let g;
-let scoreboard;
+let scoreBoard;
+let projectileLine;
 
 function init(){
 	bullets = [];
 	g = new Gun();
-	scoreboard = new scoreBoard();
+	scoreBoard = new ScoreBoard();
+	projectileLine = new ProjectileLine();
 }
 
 function animate(){ //Animation Loop
 	requestAnimationFrame(animate);
 	c.clearRect(0,0,canvas.width, canvas.height);
 	g.update();
-	scoreboard.update();
+	scoreBoard.update();
+	projectileLine.update();
 	c.beginPath();
 	c.arc(0,canvas.height,150,0,2 * Math.PI, false);
 	c.fillStyle = "black";
