@@ -38,7 +38,8 @@ var mouse = { //variable to store the mouse cursor's coordinates
 var bull_start = { //variable to store the bullet's initial position and angle of velocity
 	x:undefined, 
 	y: undefined,
-	angle: undefined
+	angle: undefined,
+	dist: undefined
 };
 
 canvas.addEventListener('click', function(){ //Whenever we click a mouse button, new bullet is generated
@@ -101,7 +102,8 @@ function Target(){ //Class for Targets or Balloons
 
 
 function Bullet(){ // Class for the bullets
-	const velocity = 20;
+	const dist = bull_start.dist/distance(0,0,canvas.width, canvas.height);
+	const velocity = Math.min(150 * dist,40);
 	this.x = bull_start.x; //initialize the position of bullet with the initial position of bullet(end of nozel of gun)
 	this.y = bull_start.y;
 	this.dx = Math.cos(bull_start.angle)*velocity; //Initialize components of velocity by angle of the nozel
@@ -162,6 +164,7 @@ function Gun(){ //Class for Gun
 		bull_start.x = this.x;
 		bull_start.y = this.y;
 		bull_start.angle = angle;
+		bull_start.dist = distance(mouse.x, mouse.y, bull_start.x, bull_start.y)
 		this.draw()
 	}
 }
