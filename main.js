@@ -169,23 +169,34 @@ function Gun(){ //Class for Gun
 	}
 }
 
-
+function scoreBoard(){
+	this.x = canvas.width * 0.8;
+	this.y = canvas.height * 0.1;
+	this.score = 0;
+	this.draw = function(){
+		c.font = "30px Arial";
+		c.fillText("Score: "+this.score, this.x, this.y);
+	}
+	this.update = function(){
+		this.score = score_get;
+		this.draw();
+	}
+}
 
 let g;
+let scoreboard;
 
 function init(){
 	bullets = [];
 	g = new Gun();
+	scoreboard = new scoreBoard();
 }
- function set_score(){
-	score.innerHTML = score_get;
- }
 
 function animate(){ //Animation Loop
 	requestAnimationFrame(animate);
 	c.clearRect(0,0,canvas.width, canvas.height);
 	g.update();
-	set_score();
+	scoreboard.update();
 	c.beginPath();
 	c.arc(0,canvas.height,150,0,2 * Math.PI, false);
 	c.fillStyle = "black";

@@ -13,10 +13,3 @@ body{
 	left:50%;
 	transform: translate(-50%,-50%);
 }
-
-#score_pos{
-	position: absolute;
-	top:10%;
-	right:10%;
-	color:black;
-}
