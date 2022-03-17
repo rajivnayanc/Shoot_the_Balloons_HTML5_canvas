@@ -20,7 +20,7 @@ function Bullet(canvas, c, bull_start){ // Class for the bullets
 		c.closePath();
 	}
 	
-	this.update = function(bullets, score_get){
+	this.update = function(bullets, score ){
 		var bullet_index = 0;
 		for(var i = 0; i<bullets.length;i++){
 			if(this === bullets[i]){
@@ -32,7 +32,7 @@ function Bullet(canvas, c, bull_start){ // Class for the bullets
 		this.y +=this.dy;
 		this.dy+=this.gravity;
 		if(this.x > canvas.width || this.y > canvas.height){//When  bullet goes out of the frame, delete it from array
-			score_get-=5; // deduct the score by 5
+			score.score -= 5; // deduct the score by 5
 			bullets.splice(bullet_index,1);
 		}
 		this.draw();

@@ -11,24 +11,22 @@ const MyCanvas = styled.canvas`
 	left:50%;
 	transform: translate(-50%,-50%);
 `;
+
 interface Props{
   height:number;
   width: number;
 }
+
 const Canvas = ( {height , width}:Props ) => {
+    console.log("Canvas Rendered");
     const canvas = useRef<HTMLCanvasElement>(null);
-    const start = () => {
+    
+    useEffect( () => {
       const game = new Game(canvas?.current);
       game.start();
-    }
-    // useEffect(()=>{
-    //     if(canvas?.current){
-    //       //let c:(CanvasRenderingContext2D|null) = canvas.current?.getContext('2d');
-    //       //start(canvas.current);
-    //     }
-          
-    // }, [])
-    return <MyCanvas onClick={()=>start()} width={width} height={height} ref={canvas} />
+    }, [height, width]);
+
+    return <MyCanvas width={width} height={height} ref={canvas} />
 }
 
 export default Canvas;

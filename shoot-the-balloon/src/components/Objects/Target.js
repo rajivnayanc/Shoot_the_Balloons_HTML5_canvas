@@ -20,7 +20,7 @@ function Target(canvas, c){ //Class for Targets or Balloons
 		
 	}
 	
-	this.update = function(bullets,targets, score_get){
+	this.update = function(bullets,targets, score){
 		var target_index = 0;
 		for(var i = 0; i<targets.length;i++){
 			if(this === targets[i]){
@@ -34,7 +34,7 @@ function Target(canvas, c){ //Class for Targets or Balloons
 				var b = bullets[i]; //If bullets and target collide, delete both bullet and target
 				bullets.splice(i,1);
 				targets.splice(target_index,1); 
-				score_get+=20; //Increase the score by 20
+				score.score += 20; //Increase the score by 20
 				continue;
 			}
 		}
@@ -43,7 +43,7 @@ function Target(canvas, c){ //Class for Targets or Balloons
 		this.y = this.ang * this.x + canvas.height/4;
 		if(this.x<0){ // if the target goes out the frame, delete the target from the array
 			targets.splice(target_index,1);
-			score_get-=10;
+			score.score -= 10;
 		}
 		this.draw();
 	}

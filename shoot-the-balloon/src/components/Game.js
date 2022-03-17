@@ -5,16 +5,10 @@ import ScoreBoard from "./Objects/ScoreBoard";
 import ProjectileLine from "./Objects/ProjectileLine";
 
 
-// window.addEventListener('resize', function(){
-// 	canvas.width = window.innerWidth;
-// 	canvas.height = window.innerHeight;
-// 	init();
-// })
-
 function Game(canvasEl){
     this.canvas = canvasEl;
     this.c = canvasEl.getContext('2d');
-    this.score_get = 0;
+    this.score = {score:0};
 
     this.bullets = [];
     this.targets = [];
@@ -28,17 +22,18 @@ function Game(canvasEl){
     this.addEventListeners = function () {
         setInterval(function(){
             this.targets.push(new Target(this.canvas, this.c));
-        }, 800);
+        }.bind(this), 800);
 
         this.canvas.addEventListener('click', function(){ //Whenever we click a mouse button, new bullet is generated
-            this.bullets.push(new Bullet(this.canvas, this.c));
-        })
+            this.bullets.push(new Bullet(this.canvas, this.c, this.bull_start));
+        }.bind(this));
         
         this.canvas.addEventListener('mousemove', function(event){ //On moving the mouse, the mouse variable gets updated with
             this.mouse.x = event.clientX; 						  // current mouse position
             this.mouse.y = event.clientY;
-        })
-    }
+        }.bind(this));
+    }.bind(this);
+
     this.init = function(){
         this.bullets = [];
         this.g = new Gun(this.canvas, this.c);
@@ -55,14 +50,14 @@ function Game(canvasEl){
             angle: undefined,
             dist: undefined
         };
-    }
+    }.bind(this);
     
     this.animate = function(){ //Animation Loop
         requestAnimationFrame(this.animate);
         this.c.clearRect(0,0,this.canvas.width, this.canvas.height);
-        this.g.update();
-        this.scoreBoard.update();
-        this.projectileLine.update();
+        this.g.update(this.bull_start, this.mouse);
+        this.scoreBoard.update( this.score.score );
+        this.projectileLine.update( this.bull_start );
         this.c.beginPath();
         this.c.arc(0,this.canvas.height,150,0,2 * Math.PI, false);
         this.c.fillStyle = "black";
@@ -70,13 +65,13 @@ function Game(canvasEl){
         this.c.closePath();
         
         for(let i = 0; i< this.bullets.length; i++){
-            this.bullets[i].update(this.bullets);
+            this.bullets[i].update( this.bullets, this.score );
         }
         
         for(let i = 0; i< this.targets.length; i++){
-            this.targets[i].update(this.bullets,this.targets);
+            this.targets[i].update( this.bullets,this.targets, this.score );
         }
-    }
+    }.bind(this);
 
     this.start = function () {
         this.init();
