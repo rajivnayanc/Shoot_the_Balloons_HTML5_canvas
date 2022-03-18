@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Game from './Game';
 
@@ -28,5 +29,8 @@ const Canvas = ( {height , width}:Props ) => {
 
     return <MyCanvas width={width} height={height} ref={canvas} />
 }
-
+Canvas.propTypes = {
+  height: PropTypes.number,
+  width: PropTypes.number
+}
 export default Canvas;
