@@ -2,7 +2,8 @@ import { BulletPosition } from './Bullet';
 import { Position2D } from './common-intf';
 import RenderableObject from './renderable-object';
 import { distance } from './utils';
-class Gun extends RenderableObject{
+
+export class Gun extends RenderableObject{
 	x: number;
 	y: number;
 	length: number;
@@ -39,4 +40,33 @@ class Gun extends RenderableObject{
 	}
 }
 
-export default Gun;
+export class GunBody extends RenderableObject{
+	pos:Position2D;
+	radius: number;
+	startAngle: number;
+	endAngle: number;
+	color: string;
+	constructor(canvas:HTMLCanvasElement, c:CanvasRenderingContext2D){
+		super(canvas, c);
+		this.pos = {
+			x: 0,
+			y: this.canvas.height
+		}
+		this.radius = 150;
+		this.startAngle = 0;
+		this.endAngle = 2 * Math.PI;
+		this.color = "black";
+
+	}
+	draw(): void {
+		this.c.beginPath();
+        this.c.arc( this.pos.x, this.pos.y, this.radius, this.startAngle, this.endAngle, false);
+        this.c.fillStyle = this.color;
+        this.c.fill();
+        this.c.closePath();
+	}
+	update(): void {
+		this.draw();
+	}
+
+}

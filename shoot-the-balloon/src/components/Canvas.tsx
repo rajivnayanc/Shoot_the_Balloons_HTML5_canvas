@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Game from './Game';
+import Game from '../game/Game';
 
 const MyCanvas = styled.canvas`
   padding: 0;
@@ -19,18 +19,22 @@ interface Props{
 }
 
 const Canvas = ( {height , width}:Props ) => {
-    console.log("Canvas Rendered");
+
     const canvas = useRef<HTMLCanvasElement>(null);
     
     useEffect( () => {
-      const game = new Game(canvas?.current);
-      game.start();
-    }, [height, width]);
+      if(canvas.current){
+        const game = new Game(canvas.current);
+        game.start();
+      }
+    }, [ height, width ]);
 
-    return <MyCanvas width={width} height={height} ref={canvas} />
+    return <MyCanvas width={ width } height={ height } ref={canvas} />
 }
+
 Canvas.propTypes = {
   height: PropTypes.number,
   width: PropTypes.number
 }
+
 export default Canvas;
