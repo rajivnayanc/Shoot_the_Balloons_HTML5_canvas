@@ -1,6 +1,15 @@
 import RenderableObject from './renderable-object';
+import { Score } from './ScoreBoard';
 import { distance } from './utils';
-class Bullet{
+
+export interface BulletPosition { //variable to store the bullet's initial position and angle of velocity
+	x: number; 
+	y: number;
+	angle: number;
+	dist: number;
+};
+
+class Bullet extends RenderableObject{
 	x:number =0;
 	y:number = 0;
 	dx:number = 0;
@@ -8,7 +17,8 @@ class Bullet{
 	color:string = "black";
 	radius:number = 10;
 	gravity = 0.3;
-	constructor(private canvas:HTMLCanvasElement, private c:CanvasRenderingContext2D, private bull_start:any){
+	constructor(canvas:HTMLCanvasElement, c:CanvasRenderingContext2D, private bull_start:BulletPosition){
+		super(canvas, c);
 		const dist = bull_start.dist/distance(0,0,canvas.width, canvas.height);
 		const velocity = Math.min(150 * dist, 40);
 		this.x = bull_start.x; //initialize the position of bullet with the initial position of bullet(end of nozel of gun)
@@ -27,7 +37,7 @@ class Bullet{
 		this.c.fill();
 		this.c.closePath();
 	}
-	update(bullets:Bullet[], score:any): void {
+	update( bullets:Bullet[], score:Score ): void {
 		let bullet_index:number = 0;
 		for(var i = 0; i<bullets.length;i++){
 			if(this === bullets[i]){
@@ -35,9 +45,9 @@ class Bullet{
 				break;
 			}
 		}
-		this.x +=this.dx;
-		this.y +=this.dy;
-		this.dy+=this.gravity;
+		this.x += this.dx;
+		this.y += this.dy;
+		this.dy += this.gravity;
 		if(this.x > this.canvas.width || this.y > this.canvas.height){//When  bullet goes out of the frame, delete it from array
 			score.score -= 5; // deduct the score by 5
 			bullets.splice(bullet_index,1);

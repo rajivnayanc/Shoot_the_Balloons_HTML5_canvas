@@ -56,7 +56,7 @@ function Game(canvasEl){
         requestAnimationFrame(this.animate);
         this.c.clearRect(0,0,this.canvas.width, this.canvas.height);
         this.g.update(this.bull_start, this.mouse);
-        this.scoreBoard.update( this.score.score );
+        this.scoreBoard.update( this.score );
         this.projectileLine.update( this.bull_start );
         this.c.beginPath();
         this.c.arc(0,this.canvas.height,150,0,2 * Math.PI, false);

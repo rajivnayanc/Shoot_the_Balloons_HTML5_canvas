@@ -1,8 +1,9 @@
 
 abstract class RenderableObject {
-    constructor() { }
+
+    constructor(protected canvas:HTMLCanvasElement, protected c:CanvasRenderingContext2D) { }
     abstract draw():void;
-    abstract update():void;
+    abstract update(...args:any):void;
 }
 
 export default RenderableObject;
