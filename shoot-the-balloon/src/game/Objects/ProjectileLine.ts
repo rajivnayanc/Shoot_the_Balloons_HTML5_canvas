@@ -1,7 +1,7 @@
 import { BulletPosition } from './Bullet';
 import { Position2D } from './common-intf';
 import RenderableObject from './renderable-object';
-import { distance, getQuadraticRoots, NullCheck } from './utils';
+import { distance, getQuadraticRoots } from './utils';
 
 class ProjectileLine extends RenderableObject {
 	start:Position2D;
