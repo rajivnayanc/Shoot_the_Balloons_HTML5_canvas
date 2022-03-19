@@ -17,6 +17,7 @@ jobs:
           cd shoot-the-balloon
           npm install
           npm run build
+          cp ./build ../
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
