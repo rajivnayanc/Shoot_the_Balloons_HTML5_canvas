@@ -6,6 +6,7 @@ import ProjectileLine from "./Objects/ProjectileLine";
 import { Position2D } from "./Objects/common-intf";
 import { AnimationAction } from "./Animation";
 import { DARK_THEME } from "./Objects/consts";
+import { RandomStars } from "./Objects/RandomStars";
 
 class GameApp extends AnimationAction {
     score!: Score;
@@ -17,7 +18,7 @@ class GameApp extends AnimationAction {
     gunBody!: GunBody;
     scoreBoard!: ScoreBoard;
     projectileLine!: ProjectileLine;
-
+    randomStars!: RandomStars;
     constructor(  canvas:HTMLCanvasElement, private theme:string ) {
         super(canvas);
         const context = canvas.getContext('2d');
@@ -45,6 +46,7 @@ class GameApp extends AnimationAction {
             angle: -1,
             dist: -1
         };
+        this.randomStars = new RandomStars(this.canvas, this.c, 100);
     }
     
     addEventListeners = () => {
@@ -74,7 +76,7 @@ class GameApp extends AnimationAction {
             this.c.restore();
         }
         this.c.restore();
-
+        this.theme===DARK_THEME  && this.randomStars.update();
         this.gun.update(this.bull_start, this.mouse);
         this.scoreBoard.update( this.score );
         this.gunBody.update();

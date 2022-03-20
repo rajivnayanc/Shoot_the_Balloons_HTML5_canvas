@@ -1,5 +1,5 @@
 import Bullet from './Bullet';
-import { DARK_THEME, LIGHT_THEME } from './consts';
+import { DARK_THEME } from './consts';
 import RenderableObject from './renderable-object';
 import { Score } from './ScoreBoard';
 import { distance } from './utils';
@@ -11,7 +11,7 @@ class Target extends RenderableObject{
 	ang: number;
 	dx: number;
 	dy: number;
-	color: string;
+	strokeColor: string;
 	fillColor: string;
 	constructor(canvas:HTMLCanvasElement, c:CanvasRenderingContext2D, private theme:string){
 		super( canvas, c);
@@ -22,7 +22,7 @@ class Target extends RenderableObject{
 		
 		this.dx = -Math.random() * 10 - 3;
 		this.dy = 0;
-		this.color = theme === LIGHT_THEME ? "black" : "white";
+		this.strokeColor = theme === DARK_THEME ? "white" : "yellow";
 		this.fillColor = theme === DARK_THEME ? '#999' : '#111';
 	}
 	draw(): void {
@@ -30,7 +30,7 @@ class Target extends RenderableObject{
 		this.c.beginPath();
 		this.c.arc(this.x, this.y,this.radius,0, Math.PI*2, false);
 		this.c.fillStyle = this.fillColor;
-		this.c.strokeStyle = this.color;
+		this.c.strokeStyle = this.strokeColor;
 		this.c.lineWidth = 5;
 		this.c.stroke();
 		this.c.fill();
