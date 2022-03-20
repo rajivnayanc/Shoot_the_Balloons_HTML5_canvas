@@ -5,6 +5,7 @@ import ScoreBoard, { Score } from "./Objects/ScoreBoard";
 import ProjectileLine from "./Objects/ProjectileLine";
 import { Position2D } from "./Objects/common-intf";
 import { AnimationAction } from "./Animation";
+import { DARK_THEME } from "./Objects/consts";
 
 class GameApp extends AnimationAction {
     score!: Score;
@@ -17,7 +18,7 @@ class GameApp extends AnimationAction {
     scoreBoard!: ScoreBoard;
     projectileLine!: ProjectileLine;
 
-    constructor(  canvas:HTMLCanvasElement ) {
+    constructor(  canvas:HTMLCanvasElement, private theme:string ) {
         super(canvas);
         const context = canvas.getContext('2d');
         if(context === null)
@@ -30,10 +31,10 @@ class GameApp extends AnimationAction {
         this.score = { score:0 };
         this.bullets = [];
         this.targets = [];
-        this.gun = new Gun(this.canvas, this.c);
-        this.scoreBoard = new ScoreBoard(this.canvas, this.c);
-        this.projectileLine = new ProjectileLine(this.canvas, this.c);
-        this.gunBody = new GunBody(this.canvas, this.c);
+        this.gun = new Gun(this.canvas, this.c, this.theme);
+        this.scoreBoard = new ScoreBoard(this.canvas, this.c, this.theme);
+        this.projectileLine = new ProjectileLine(this.canvas, this.c, this.theme);
+        this.gunBody = new GunBody(this.canvas, this.c, this.theme);
         this.mouse = { //variable to store the mouse cursor's coordinates
             x: this.canvas.width/2,
             y: this.canvas.height/2
@@ -48,11 +49,11 @@ class GameApp extends AnimationAction {
     
     addEventListeners = () => {
         setInterval( () => {
-            this.targets.push(new Target(this.canvas, this.c));
+            this.targets.push(new Target(this.canvas, this.c, this.theme));
         }, 800);
 
         this.canvas.addEventListener('click', () => { //Whenever we click a mouse button, new bullet is generated
-            this.bullets.push(new Bullet(this.canvas, this.c, this.bull_start));
+            this.bullets.push(new Bullet(this.canvas, this.c, this.bull_start, this.theme));
         });
         
         this.canvas.addEventListener('mousemove', (event)=>{ //On moving the mouse, the mouse variable gets updated with
@@ -62,11 +63,22 @@ class GameApp extends AnimationAction {
     };
 
     update = () => { 
+
+        this.c.save();
         this.c.clearRect(0,0,this.canvas.width, this.canvas.height);
+        if(this.theme === DARK_THEME){
+            this.c.save();
+            this.c.fillStyle = 'black';
+            this.c.fillRect(0,0,this.canvas.width, this.canvas.height);
+            this.c.fill();
+            this.c.restore();
+        }
+        this.c.restore();
+
         this.gun.update(this.bull_start, this.mouse);
         this.scoreBoard.update( this.score );
-        this.projectileLine.update( this.bull_start );
         this.gunBody.update();
+
         for(let i = 0; i< this.bullets.length; i++){
             this.bullets[i].update( this.bullets, this.score );
         }
@@ -74,6 +86,8 @@ class GameApp extends AnimationAction {
         for(let i = 0; i< this.targets.length; i++){
             this.targets[i].update( this.bullets,this.targets, this.score );
         }
+
+        this.projectileLine.update( this.bull_start );
     };
 
 }

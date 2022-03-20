@@ -1,5 +1,6 @@
 import { BulletPosition } from './Bullet';
 import { Position2D } from './common-intf';
+import { LIGHT_THEME } from './consts';
 import RenderableObject from './renderable-object';
 import { distance, getQuadraticRoots } from './utils';
 
@@ -8,12 +9,14 @@ class ProjectileLine extends RenderableObject {
 	end:Position2D;
 	controlPoints:Position2D;
 	gravity:number;
-	constructor(canvas: HTMLCanvasElement, c: CanvasRenderingContext2D){
+	color: string;
+	constructor(canvas: HTMLCanvasElement, c: CanvasRenderingContext2D, theme:string){
 		super(canvas, c);
 		this.start = {x:0,y:0};
 		this.end = {x:0,y:0};
 		this.controlPoints = {x:0,y:0};
-		this.gravity = 0.3;		
+		this.gravity = 0.3;
+		this.color = theme===LIGHT_THEME?"black":"gray";
 	}
 	draw(): void {
 		this.c.save();
@@ -22,7 +25,7 @@ class ProjectileLine extends RenderableObject {
 		this.c.setLineDash([10,15])
 		this.c.moveTo(this.start.x, this.start.y);
 		this.c.quadraticCurveTo(this.controlPoints.x, this.controlPoints.y, this.end.x, this.end.y);
-		this.c.strokeStyle = "red";
+		this.c.strokeStyle = this.color;
 		this.c.stroke();
 		this.c.restore();
 	}
