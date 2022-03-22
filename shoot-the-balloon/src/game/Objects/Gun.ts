@@ -20,7 +20,7 @@ export class Gun extends RenderableObject{
 	draw():void{
 		this.c.save();
 		this.c.beginPath();
-		this.c.strokeStyle = this.theme === LIGHT_THEME ? "black" : "white";
+		this.c.strokeStyle = this.theme === LIGHT_THEME ? "black" : "#2B3843";
 		this.c.moveTo(10, this.canvas.height-10);
 		this.c.lineTo(this.x, this.y);
 		this.c.lineWidth = 20;
@@ -56,7 +56,7 @@ export class GunBody extends RenderableObject{
 		this.radius = 150;
 		this.startAngle = 0;
 		this.endAngle = 2 * Math.PI;
-		this.color = theme===LIGHT_THEME?"black":"gray";
+		this.color = theme===LIGHT_THEME?"black":"#26333E";
 
 	}
 	draw(): void {
@@ -64,7 +64,7 @@ export class GunBody extends RenderableObject{
 		this.c.beginPath();
         this.c.arc( this.pos.x, this.pos.y, this.radius, this.startAngle, this.endAngle, false);
         this.c.fillStyle = this.color;
-		this.c.strokeStyle = this.theme === LIGHT_THEME ? "black" : "white";
+		this.c.strokeStyle = this.theme === LIGHT_THEME ? "black" : "#E3EAEF";
         this.c.fill();
 		this.c.stroke();
         this.c.closePath();

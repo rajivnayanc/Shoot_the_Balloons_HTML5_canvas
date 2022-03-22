@@ -5,6 +5,7 @@ import { Score } from './ScoreBoard';
 import { distance } from './utils';
 
 class Target extends RenderableObject{
+
 	x: number;
 	y: number;
 	radius: number;
@@ -13,6 +14,7 @@ class Target extends RenderableObject{
 	dy: number;
 	strokeColor: string;
 	fillColor: string;
+
 	constructor(canvas:HTMLCanvasElement, c:CanvasRenderingContext2D, private theme:string){
 		super( canvas, c);
 		this.x = canvas.width;
@@ -22,21 +24,24 @@ class Target extends RenderableObject{
 		
 		this.dx = -Math.random() * 10 - 3;
 		this.dy = 0;
-		this.strokeColor = theme === DARK_THEME ? "white" : "yellow";
-		this.fillColor = theme === DARK_THEME ? '#999' : '#111';
+		this.strokeColor = theme === DARK_THEME ? "#111" : "yellow";
+		this.fillColor = theme === DARK_THEME ? '#ABA' : '#111';
 	}
+
 	draw(): void {
 		this.c.save();
 		this.c.beginPath();
 		this.c.arc(this.x, this.y,this.radius,0, Math.PI*2, false);
 		this.c.fillStyle = this.fillColor;
 		this.c.strokeStyle = this.strokeColor;
-		this.c.lineWidth = 5;
+		this.c.shadowColor = this.fillColor;
+		this.c.shadowBlur = 10;
 		this.c.stroke();
 		this.c.fill();
 		this.c.closePath();
 		this.c.restore();
 	}
+
 	update(bullets:Bullet[],targets:Target[], score:Score): void {
 		let target_index = 0;
 		for(let i = 0; i<targets.length;i++){
@@ -63,6 +68,7 @@ class Target extends RenderableObject{
 		}
 		this.draw();
 	}
+
 }
 
 export default Target;

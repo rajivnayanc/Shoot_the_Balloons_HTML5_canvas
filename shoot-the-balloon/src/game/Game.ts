@@ -7,6 +7,7 @@ import { Position2D } from "./Objects/common-intf";
 import { AnimationAction } from "./Animation";
 import { DARK_THEME } from "./Objects/consts";
 import { RandomStars } from "./Objects/RandomStars";
+import { Background } from "./Objects/Background";
 
 class GameApp extends AnimationAction {
     score!: Score;
@@ -19,6 +20,7 @@ class GameApp extends AnimationAction {
     scoreBoard!: ScoreBoard;
     projectileLine!: ProjectileLine;
     randomStars!: RandomStars;
+    background!: Background;
     constructor(  canvas:HTMLCanvasElement, private theme:string ) {
         super(canvas);
         const context = canvas.getContext('2d');
@@ -47,6 +49,7 @@ class GameApp extends AnimationAction {
             dist: -1
         };
         this.randomStars = new RandomStars(this.canvas, this.c, 100);
+        this.background = new Background(this.canvas, this.c, this.theme);
     }
     
     addEventListeners = () => {
@@ -65,18 +68,9 @@ class GameApp extends AnimationAction {
     };
 
     update = () => { 
-
-        this.c.save();
         this.c.clearRect(0,0,this.canvas.width, this.canvas.height);
-        if(this.theme === DARK_THEME){
-            this.c.save();
-            this.c.fillStyle = 'black';
-            this.c.fillRect(0,0,this.canvas.width, this.canvas.height);
-            this.c.fill();
-            this.c.restore();
-        }
-        this.c.restore();
-        this.theme===DARK_THEME  && this.randomStars.update();
+        this.background.update();
+        this.theme === DARK_THEME  && this.randomStars.update();
         this.gun.update(this.bull_start, this.mouse);
         this.scoreBoard.update( this.score );
         this.gunBody.update();
