@@ -1,17 +1,21 @@
 import Bullet from './Bullet';
+import { DARK_THEME } from './consts';
 import RenderableObject from './renderable-object';
 import { Score } from './ScoreBoard';
 import { distance } from './utils';
 
 class Target extends RenderableObject{
+
 	x: number;
 	y: number;
 	radius: number;
 	ang: number;
 	dx: number;
 	dy: number;
-	color: string;
-	constructor(canvas:HTMLCanvasElement, c:CanvasRenderingContext2D){
+	strokeColor: string;
+	fillColor: string;
+
+	constructor(canvas:HTMLCanvasElement, c:CanvasRenderingContext2D, private theme:string){
 		super( canvas, c);
 		this.x = canvas.width;
 		this.y = canvas.height;
@@ -20,16 +24,24 @@ class Target extends RenderableObject{
 		
 		this.dx = -Math.random() * 10 - 3;
 		this.dy = 0;
-		this.color = 'red';
+		this.strokeColor = theme === DARK_THEME ? "#111" : "yellow";
+		this.fillColor = theme === DARK_THEME ? '#ABA' : '#111';
 	}
+
 	draw(): void {
+		this.c.save();
 		this.c.beginPath();
 		this.c.arc(this.x, this.y,this.radius,0, Math.PI*2, false);
-		this.c.strokeStyle = this.color;
-		this.c.lineWidth = 1;
+		this.c.fillStyle = this.fillColor;
+		this.c.strokeStyle = this.strokeColor;
+		this.c.shadowColor = this.fillColor;
+		this.c.shadowBlur = 10;
 		this.c.stroke();
+		this.c.fill();
 		this.c.closePath();
+		this.c.restore();
 	}
+
 	update(bullets:Bullet[],targets:Target[], score:Score): void {
 		let target_index = 0;
 		for(let i = 0; i<targets.length;i++){
@@ -48,7 +60,7 @@ class Target extends RenderableObject{
 			}
 		}
 		
-		this.x+=this.dx;
+		this.x += this.dx;
 		this.y = this.ang * this.x + this.canvas.height/4;
 		if(this.x<0){ // if the target goes out the frame, delete the target from the array
 			targets.splice(target_index,1);
@@ -56,6 +68,7 @@ class Target extends RenderableObject{
 		}
 		this.draw();
 	}
+
 }
 
 export default Target;

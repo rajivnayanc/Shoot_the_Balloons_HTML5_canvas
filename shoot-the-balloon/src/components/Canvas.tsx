@@ -16,25 +16,27 @@ const MyCanvas = styled.canvas`
 interface Props{
   height:number;
   width: number;
+  theme: string;
 }
 
-const Canvas = ( {height , width}:Props ) => {
+const Canvas = ( {height , width, theme}:Props ) => {
 
     const canvas = useRef<HTMLCanvasElement>(null);
     
     useEffect( () => {
       if(canvas.current){
-        const game = new Game(canvas.current);
+        const game = new Game(canvas.current, theme);
         game.start();
       }
-    }, [ height, width ]);
+    }, [ height, width, theme ]);
 
     return <MyCanvas width={ width } height={ height } ref={canvas} />
 }
 
 Canvas.propTypes = {
   height: PropTypes.number,
-  width: PropTypes.number
+  width: PropTypes.number,
+  theme:PropTypes.string
 }
 
 export default Canvas;
