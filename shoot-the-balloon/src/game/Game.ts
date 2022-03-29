@@ -8,6 +8,7 @@ import { AnimationAction } from "./Animation";
 import { DARK_THEME } from "./Objects/consts";
 import { RandomStars } from "./Objects/RandomStars";
 import { Background } from "./Objects/Background";
+import { ExplosionParticle } from "./Objects/ExplosionParticle";
 
 class GameApp extends AnimationAction {
     score!: Score;
@@ -21,6 +22,8 @@ class GameApp extends AnimationAction {
     projectileLine!: ProjectileLine;
     randomStars!: RandomStars;
     background!: Background;
+    explosionParticles! : ExplosionParticle[];
+
     constructor(  canvas:HTMLCanvasElement, private theme:string ) {
         super(canvas);
         const context = canvas.getContext('2d');
@@ -34,6 +37,7 @@ class GameApp extends AnimationAction {
         this.score = { score:0 };
         this.bullets = [];
         this.targets = [];
+        this.explosionParticles = [];
         this.gun = new Gun(this.canvas, this.c, this.theme);
         this.scoreBoard = new ScoreBoard(this.canvas, this.c, this.theme);
         this.projectileLine = new ProjectileLine(this.canvas, this.c, this.theme);
@@ -85,8 +89,13 @@ class GameApp extends AnimationAction {
             }
         });
         
-
         this.targets.forEach( (target, index)=>{
+            const r2 = target.radius;
+            const A:Position2D = {
+                x: target.x,
+                y: target.y
+            };
+
             target.update( this.bullets );
             if(!target.inFrame ){
                 targets2Remove.push(index);
@@ -96,12 +105,31 @@ class GameApp extends AnimationAction {
                 targets2Remove.push(index);
                 this.score.score += 20;
                 bullets2Remove.push( target.bulletInd );
+                const r1 = this.bullets[target.bulletInd].radius;
+                const ratio = r1/(r1+r2);
+                const B:Position2D = {
+                    x: this.bullets[target.bulletInd].x,
+                    y: this.bullets[target.bulletInd].y
+                };
+
+                const pos:Position2D = {
+                    x: ( B.x - A.x )* ratio + A.x,
+                    y: ( B.y - A.y )* ratio + A.y
+                }
+                for(let i=0;i<8;i++){
+                    this.explosionParticles.push( new ExplosionParticle(this.canvas, this.c, pos) );
+                }
             }
         });
 
         targets2Remove.forEach( target => this.targets.splice(target, 1));
         bullets2Remove.forEach( bullet => this.bullets.splice( bullet, 1));
 
+        this.explosionParticles.forEach((particle, index) => {
+            particle.update();
+            if(particle.ttl <= 0)
+                this.explosionParticles.splice(index,1);
+        });
 
         this.projectileLine.update( this.bull_start );
     };
