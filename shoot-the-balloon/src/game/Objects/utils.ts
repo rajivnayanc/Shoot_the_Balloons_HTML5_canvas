@@ -17,6 +17,10 @@ export const getQuadraticRoots = (a:number,b:number,c:number):(number|null)=>{
 	return null;
 }
 
+export const randomInRange = (min: number, max:number):number => {
+	return Math.random() * (max - min + 1) + min;
+}
+
 export const NullCheck = (value:any, fallback:any) => {
 	return value?value:fallback;
 }
