@@ -1,6 +1,5 @@
 import { LIGHT_THEME } from './consts';
 import RenderableObject from './renderable-object';
-import { Score } from './ScoreBoard';
 import { distance } from './utils';
 
 export interface BulletPosition { //variable to store the bullet's initial position and angle of velocity
@@ -18,7 +17,8 @@ class Bullet extends RenderableObject{
 	dy:number = 0;
 	color:string = "black";
 	radius:number = 10;
-	gravity = 0.3;
+	gravity:number = 0.3;
+	active:boolean = true;
 
 	constructor(canvas:HTMLCanvasElement, c:CanvasRenderingContext2D, private bull_start:BulletPosition, theme:string){
 		super(canvas, c);
@@ -47,22 +47,14 @@ class Bullet extends RenderableObject{
 		this.c.restore();
 	}
 
-	update( bullets:Bullet[], score:Score ): void {
-		let bullet_index:number = 0;
-		for(var i = 0; i<bullets.length;i++){
-			if(this === bullets[i]){
-				bullet_index = i;
-				break;
-			}
-		}
+	update(): void {
+		this.draw();
 		this.x += this.dx;
 		this.y += this.dy;
 		this.dy += this.gravity;
 		if(this.x > this.canvas.width || this.y > this.canvas.height){ //When  bullet goes out of the frame, delete it from array
-			score.score -= 5; // deduct the score by 5
-			bullets.splice(bullet_index,1);
+			this.active = false;
 		}
-		this.draw();
 	}
 
 }
