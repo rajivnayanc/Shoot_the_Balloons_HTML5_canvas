@@ -74,14 +74,34 @@ class GameApp extends AnimationAction {
         this.gun.update(this.bull_start, this.mouse);
         this.scoreBoard.update( this.score );
         this.gunBody.update();
+        let targets2Remove:number[] = [];
+        let bullets2Remove:number[] = [];
 
-        for(let i = 0; i< this.bullets.length; i++){
-            this.bullets[i].update( this.bullets, this.score );
-        }
+        this.bullets.forEach((bullet, index)=>{
+            bullet.update();
+            if( !bullet.active ){
+                bullets2Remove.push( index );
+                this.score.score -= 5;
+            }
+        });
         
-        for(let i = 0; i< this.targets.length; i++){
-            this.targets[i].update( this.bullets,this.targets, this.score );
-        }
+
+        this.targets.forEach( (target, index)=>{
+            target.update( this.bullets );
+            if(!target.inFrame ){
+                targets2Remove.push(index);
+                this.score.score -= 10;
+            }
+            if(target.isHit){
+                targets2Remove.push(index);
+                this.score.score += 20;
+                bullets2Remove.push( target.bulletInd );
+            }
+        });
+
+        targets2Remove.forEach( target => this.targets.splice(target, 1));
+        bullets2Remove.forEach( bullet => this.bullets.splice( bullet, 1));
+
 
         this.projectileLine.update( this.bull_start );
     };
