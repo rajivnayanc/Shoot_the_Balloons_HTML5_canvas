@@ -9,23 +9,15 @@ You can play the game here: [Click Here](https://rajivnayanc.github.io/Shoot_the
 
 Enjoy! 
 
-To see the game video: [Click Here](https://youtu.be/GfCtvOjVBes)
-
 Here are some screenshots of the Game :
 
 <img src = "assets/1.png" width = "60%">
-<img src = "assets/2.png" width="60%">
 
 
 
 ### Built with
 
 * [HTML 5 Canvas](https://www.w3schools.com/html/html5_canvas.asp)
-
-## Deployement
-* Download the repository
-* Open index.html in browser
-* Done!
 
 # About Me
 
